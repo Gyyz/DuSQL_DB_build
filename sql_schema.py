@@ -41,7 +41,7 @@ class SCM:
         self.db_cnt = db_cnt  # the table values
 
 
-        self.sql_lines = ['PRAGMA foreign_keys = ON;']
+        self.sql_lines = ['PRAGMA foreign_keys = OFF;']  # ON
 
         self.column_names = db_sc['column_names']
         self.column_types = db_sc['column_types']
@@ -100,7 +100,7 @@ class SCM:
                 valu = list(map(wrapped, valu))
                 # some column conflict in primary key?
                 # todo: how to handle conflict in primary key, here ignore first
-                table_val_block[self.table_names.index(tbl_name)].append(f'''insert into or ignore "{tbl_name}" ({header}) values ({', '.join(valu)})''')
+                table_val_block[self.table_names.index(tbl_name)].append(f'''insert or ignore into "{tbl_name}" ({header}) values ({', '.join(valu)})''')
         self.add_value_lines = sum(table_val_block, [])
 
     def finalize(self):
